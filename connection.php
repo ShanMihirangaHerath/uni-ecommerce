@@ -6,7 +6,7 @@ class Database{
             Database::$connection = new mysqli("localhost", "root", "Shan_200630103728", "uni-eshop","3306");
         }
     }
-    public static function Iud($q){
+    public static function iud($q){
         Database::setUpConnection();
         Database::$connection->query($q);
     }

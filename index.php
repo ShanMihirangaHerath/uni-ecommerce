@@ -1,4 +1,4 @@
-<?php 
+<?php
 include "connection.php";
 ?>
 <!DOCTYPE html>
@@ -67,22 +67,22 @@ include "connection.php";
                             <div class="col-6">
                                 <label class="form-label">Gender</label>
                                 <select class="form-select" id="gender">
-                                    <?php 
-                                        $resultset = Database::search("SELECT * FROM `gender`");
-                                        $num = $resultset->num_rows;
-                                        for($i=0;$i<$num;$i++){
-                                            $data = $resultset->fetch_assoc();
-                                            ?>
-                                                <option value="<?php echo $data["id_gender"]; ?>">
-                                                    <?php echo $data["name"];?>
-                                                </option>
-                                            <?php
-                                        }
+                                    <?php
+                                    $resultset = Database::search("SELECT * FROM `gender`");
+                                    $num = $resultset->num_rows;
+                                    for ($i = 0; $i < $num; $i++) {
+                                        $data = $resultset->fetch_assoc();
+                                    ?>
+                                        <option value="<?php echo $data["id_gender"]; ?>">
+                                            <?php echo $data["name"]; ?>
+                                        </option>
+                                    <?php
+                                    }
                                     ?>
                                 </select>
                             </div>
                             <div class="col-12 col-lg-6 d-grid">
-                                <button class="btn btn-success">Sign Up</button>
+                                <button class="btn btn-success" onclick="signUp();">Sign Up</button>
                             </div>
                             <div class="col-12 col-lg-6 d-grid">
                                 <button class="btn btn-primary" onclick="changeView();">Already Have An Account? Sign In</button>
@@ -131,9 +131,14 @@ include "connection.php";
                     </div>
                     <!-- End Signin Box -->
                 </div>
-                <!-- End Content -->
-
             </div>
+            <!-- End Content -->
+            <!-- Footer -->
+            <div class="col-12 fixed-b">
+                <p class="text-center">&copy; 2024 eshop.lk || All Rights Reserved.</p>
+                <p class="text-center fw-bold">Design By Cypherlix</p>
+            </div>
+            <!-- End Footer -->
         </div>
         <script src="js/script.js"></script>
 </body>

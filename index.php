@@ -171,13 +171,13 @@ include "connection.php";
                                 </div>
                                 <div class="col-12">
                                     <label class="form-label">Verification Code</label>
-                                    <input type="text" class="form-control" placeholder="Enter Verification Code">
+                                    <input type="text" class="form-control" id="verification_code" placeholder="Enter Verification Code">
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Reset changes</button>
+                            <button type="button" class="btn btn-primary" onclick="resetPassword();">Reset changes</button>
                         </div>
                     </div>
                 </div>

@@ -84,7 +84,7 @@ function forgotPassword() {
         var model = document.getElementById("fogotPasswordModal");
         forgotPasswordModel = new bootstrap.Modal(model);
         forgotPasswordModel.show();
-      }else{
+      } else {
         document.getElementById("msg1").innerHTML = response;
         document.getElementById("msgdiv1").className = "d-block";
       }
@@ -121,33 +121,48 @@ function showPassword2() {
   }
 }
 
-function resetPassword(){
-    var email = document.getElementById("email1");
-    var verificationCode = document.getElementById("verification_code");
-    var newPassword = document.getElementById("newPassword");
-    var rePassword = document.getElementById("rePassword");
+function resetPassword() {
+  var email = document.getElementById("email1");
+  var verificationCode = document.getElementById("verification_code");
+  var newPassword = document.getElementById("newPassword");
+  var rePassword = document.getElementById("rePassword");
 
-    var form = new FormData();
-    form.append("email", email.value);
-    form.append("verificationCode", verificationCode.value);
-    form.append("newPassword", newPassword.value);
-    form.append("rePassword", rePassword.value);
+  var form = new FormData();
+  form.append("email", email.value);
+  form.append("verificationCode", verificationCode.value);
+  form.append("newPassword", newPassword.value);
+  form.append("rePassword", rePassword.value);
 
-    var xhr = new XMLHttpRequest();
+  var xhr = new XMLHttpRequest();
 
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        var response = xhr.responseText;
-        if (response == "Password Updated Successfully") {
-          alert("Password has been changed successfully");
-          forgotPasswordModel.hide();
-        }else{
-          document.getElementById("msg1").innerHTML = response;
-          document.getElementById("msgdiv1").className = "d-block";
-        }
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      var response = xhr.responseText;
+      if (response == "Password Updated Successfully") {
+        alert("Password has been changed successfully");
+        forgotPasswordModel.hide();
+      } else {
+        document.getElementById("msg1").innerHTML = response;
+        document.getElementById("msgdiv1").className = "d-block";
       }
-    };
+    }
+  };
 
-    xhr.open("POST", "resetPasswordProcess.php", true);
-    xhr.send(form);
+  xhr.open("POST", "resetPasswordProcess.php", true);
+  xhr.send(form);
+}
+
+function signout() {
+  var request = new XMLHttpRequest();
+  request.onreadystatechange = function () {
+    if (request.readyState == 4 && request.status == 200) {
+      var response = request.responseText;
+      if (response == "Successfully Logged Out!") {
+        window.location.reload();
+      }
+    }
+  };
+
+  request.open("GET", "signoutProcess.php", true);
+  request.send();
 }

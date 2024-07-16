@@ -18,8 +18,21 @@
         <div class="row mt-1 mb-1">
 
             <div class="offset-lg-1 col-12 col-lg-3 align-self-start mt-2">
-
-                <a href="index.php" class="text-decoration-none fw-bold">Sign In or Register</a> |
+                <?php
+                    session_start();
+                    if(isset($_SESSION['uid'])) {
+                        $data = $_SESSION['uid'];
+                        ?>
+                        <span class="text-lg-start text-success"><b>Hello, <?php echo $data['fname']?></b></span> | 
+                        <span class="text-lg-start fw-bold text-danger signout" onclick="signout();">Signout</span> |
+                        <?php
+                    }else{
+                        ?>
+                        <a href="index.php" class="text-decoration-none fw-bold">Sign In or Register</a> |
+                        <?php
+                    }
+                ?>
+                
                 <span class="text-lg-start fw-bold">Help and Contact</span>
 
             </div>

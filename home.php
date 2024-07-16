@@ -1,3 +1,7 @@
+<?php
+include "connection.php";
+?>
+
 <!DOCTYPE html>
 
 <head>
@@ -35,8 +39,19 @@
 
                             <select class="form-select" style="max-width: 250px;" id="basic_search_select">
                                 <option value="0">All Categories</option>
-                                <option value="1">Mobile phones</option>
-                                <option value="2">Laptops</option>
+                                <?php
+                                $category_resultset = Database::search("SELECT * FROM `category`");
+                                $category_num = $category_resultset->num_rows;
+
+                                for ($x = 0; $x < $category_num; $x++) {
+                                    $category_data = $category_resultset->fetch_assoc();
+                                ?>
+                                    <option value="<?php echo $category_data["cat_id"]; ?>">
+                                        <?php echo $category_data["cat_name"]; ?>
+                                    </option>
+                                <?php
+                                }
+                                ?>
                             </select>
 
                         </div>
@@ -104,53 +119,98 @@
 
                     <!-- Carousel -->
 
-                        <!-- Category Name -->
 
+                    <?php
+                    $category_resultset2 = Database::search("SELECT * FROM `category`");
+                    $category_num2 = $category_resultset2->num_rows;
+
+                    for ($y = 0; $y < $category_num2; $y++) {
+                        $category_data2 = $category_resultset2->fetch_assoc();
+                    ?>
+                        <!-- Category Names -->
                         <div class="col-12 mt-3 mb-3">
-                            <a href="#" class="text-decoration-none text-dark fs-3 fw-bold">Mobile phones</a> &nbsp;&nbsp;
+                            <a href="#" class="text-decoration-none text-dark fs-3 fw-bold"><?php echo $category_data2["cat_name"]; ?></a> &nbsp;&nbsp;
                             <a href="#" class="text-decoration-none text-dark fs-6">See All &nbsp;&rarr;</a>
                         </div>
-
-                        <!-- Category Name -->
+                        <!-- End Category Names -->
                         <!-- products -->
+                        <?php
+                        $product_resultset = Database::search("SELECT * FROM `product` 
+                        WHERE `category_cat_id` = '" . $category_data2["cat_id"] . "' AND `status_id` = '1' 
+                        ORDER BY `datetime_added` DESC LIMIT 4 OFFSET 0");
+                        $product_num = $product_resultset->num_rows;
 
-                        <div class="col-12 mb-3">
-                            <div class="row border border-primary">
+                        if ($product_num > 0) {
+                            for ($z = 0; $z < $product_num; $z++) {
+                                $product_data = $product_resultset->fetch_assoc();
+                        ?>
+                                <div class="col-12 mb-3">
+                                    <div class="row border border-primary">
 
-                                <div class="col-12">
-                                    <div class="row justify-content-center gap-2">
+                                        <div class="col-12">
+                                            <div class="row justify-content-center gap-2">
 
-                                            <div class="card col-6 col-lg-2 mt-2 mb-2" style="width: 18rem;">
+                                                <div class="card col-6 col-lg-2 mt-2 mb-2" style="width: 18rem;">
+                                                    <?php
+                                                    $image_resultset = Database::search("SELECT * FROM `product_images` WHERE `product_id` = '" . $product_data["id"] . "'");
+                                                    $image_num = $image_resultset->num_rows;
+                                                    $image_data = $image_resultset->fetch_assoc();
 
-                                                <img src="resources/mobile_images/iphone12.jpg" class="card-img-top img-thumbnail mt-2" style="height: 180px;" />
-                                                <div class="card-body ms-0 m-0 text-center">
-                                                    <h5 class="card-title fw-bold fs-6">Apple iPhone 12</h5>
-                                                    <span class="badge rounded-pill text-bg-info">New</span><br/>
-                                                    <span class="card-text text-primary">Rs. 100000 .00</span><br />
-                                                    
-                                                        <span class="card-text text-warning fw-bold">In Stock</span><br />
-                                                        <span class="card-text text-success fw-bold">10 Items Available</span><br /><br />
-                                                        <a href='#' class="col-12 btn btn-success">Buy Now</a>
+                                                    if ($image_num > 0) {
+                                                    ?>
+                                                        <img src="<?php echo $image_data["img_path"]; ?>" class="card-img-top img-thumbnail mt-2" style="height: 180px;" />
+                                                    <?php
+                                                    } else {
+                                                    ?>
+                                                        <img src="resources/mobile_images/iphone12.jpg" class="card-img-top img-thumbnail mt-2" style="height: 180px;" />
+                                                    <?php
+                                                    }
+                                                    ?>
 
+                                                    <div class="card-body ms-0 m-0 text-center">
+                                                        <h5 class="card-title fw-bold fs-6"><?php echo $product_data["title"]; ?></h5>
+                                                        <span class="badge rounded-pill text-bg-info">New</span><br />
+                                                        <span class="card-text text-primary"><?php echo $product_data["price"]; ?></span><br />
+                                                        <?php
+                                                        if ($product_data["qty"] > 0) {
+                                                        ?>
+                                                            <span class="card-text text-warning fw-bold">In Stock</span><br />
+                                                            <span class="card-text text-success fw-bold">10 Items Available</span><br /><br />
+                                                            <a href='#' class="col-12 btn btn-success">Buy Now</a>
+                                                        <?php
+                                                        } else {
+                                                        ?>
+                                                            <span class="card-text text-warning fw-bold">In Stock</span><br />
+                                                            <span class="card-text text-Danger fw-bold">00 Items Available</span><br /><br />
+                                                            <a href='#' class="col-12 btn btn-success disable">Buy Now</a>
+                                                        <?php
+                                                        }
+                                                        ?>
                                                         <button class="col-12 btn btn-dark mt-2">
                                                             <i class="bi bi-cart-plus-fill text-white fs-5"></i>
                                                         </button>
-
                                                         <button class="col-12 btn btn-outline-light mt-2 border border-primary">
                                                             <i class="bi bi-heart-fill text-danger fs-5"></i>
                                                         </button>
-                                                    
+                                                    </div>
                                                 </div>
                                             </div>
-
+                                        </div>
                                     </div>
                                 </div>
-
+                            <?php
+                            }
+                        } else {
+                            ?>
+                            <div class="col-12 text-center border border-1 border-danger">
+                                <p class="h3 fw-bold text-danger mt-3 mb-3">No Items To Preview Yet!</p>
                             </div>
-                        </div>
-
-                        <!-- products -->
-
+                        <?php
+                        }
+                        ?>
+                    <?php
+                    }
+                    ?>
                 </div>
             </div>
 

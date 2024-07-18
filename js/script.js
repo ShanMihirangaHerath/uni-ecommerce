@@ -166,3 +166,48 @@ function signout() {
   request.open("GET", "signoutProcess.php", true);
   request.send();
 }
+
+function showPassword3(){
+  var textField = document.getElementById("basicPassword");
+  var eye = document.getElementById("eye3");
+
+  if (textField.type == "password") {
+    textField.type = "text";
+    eye.className = "bi bi-eye-slash-fill text-white";
+  } else {
+    textField.type = "password";
+    eye.className = "bi bi-eye-fill text-white";
+  }
+}
+
+function selectDistrict(){
+  var province_id = document.getElementById("province").value;
+
+  var xhr = new XMLHttpRequest();
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      var response = xhr.responseText;
+      document.getElementById("district").innerHTML = response;
+    }
+  };
+
+  xhr.open("GET", "selectDistrictProcess.php?province_id=" + province_id, true);
+  xhr.send();
+}
+
+function selectCity(){
+  var district_id = document.getElementById("district").value;
+
+  xhr = new XMLHttpRequest();
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      var response = xhr.responseText;
+      document.getElementById("city").innerHTML = response;
+    }
+  };
+
+  xhr.open("GET", "selectCityProcess.php?district_id=" + district_id, true);
+  xhr.send();
+}

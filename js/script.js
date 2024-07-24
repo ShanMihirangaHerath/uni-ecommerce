@@ -167,7 +167,7 @@ function signout() {
   request.send();
 }
 
-function showPassword3(){
+function showPassword3() {
   var textField = document.getElementById("basicPassword");
   var eye = document.getElementById("eye3");
 
@@ -180,7 +180,7 @@ function showPassword3(){
   }
 }
 
-function selectDistrict(){
+function selectDistrict() {
   var province_id = document.getElementById("province").value;
 
   var xhr = new XMLHttpRequest();
@@ -188,7 +188,7 @@ function selectDistrict(){
   xhr.onreadystatechange = function () {
     if (xhr.readyState == 4 && xhr.status == 200) {
       var response = xhr.responseText;
-      document.getElementById("district").innerHTML = response;
+      selectCity();
     }
   };
 
@@ -196,7 +196,7 @@ function selectDistrict(){
   xhr.send();
 }
 
-function selectCity(){
+function selectCity() {
   var district_id = document.getElementById("district").value;
 
   xhr = new XMLHttpRequest();
@@ -210,4 +210,62 @@ function selectCity(){
 
   xhr.open("GET", "selectCityProcess.php?district_id=" + district_id, true);
   xhr.send();
+}
+
+function changeProfileImage(){
+
+  var image = document.getElementById("profileimage");
+
+  image.onchange = function () {
+    var file = this.files[0];
+    var url = window.URL.createObjectURL(file);
+    document.getElementById("image").src = url;
+  }
+}
+
+function updateUserProfile(){
+  var fname = document.getElementById("fname");
+  var lname = document.getElementById("lname");
+  var mobile = document.getElementById("mobile");
+  var line1 = document.getElementById("line1");
+  var line2 = document.getElementById("line2");
+  var province = document.getElementById("province");
+  var district = document.getElementById("district");
+  var city = document.getElementById("city");
+  var pCode = document.getElementById("postal_code");
+  var image = document.getElementById("profileimage");
+
+  var form = new FormData();
+
+  form.append("fname", fname.value);
+  form.append("lname", lname.value);
+  form.append("mobile", mobile.value);
+  form.append("line1", line1.value);
+  form.append("line2", line2.value);
+  form.append("province", province.value);
+  form.append("district", district.value);
+  form.append("city", city.value);
+  form.append("postal_code", pCode.value);
+  form.append("image", image.files[0]);
+
+
+  var xhr = new XMLHttpRequest();
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      var response = xhr.responseText;
+      if (response == "Successfully Updated!") {
+        window.location.reload();
+      }else if(response == "You have not uploaded any image"){
+        alert("You have not uploaded any image");
+        window.location.reload();
+      }else{
+        alert(response);
+      }
+    }
+  }
+
+  xhr.open("POST", "updateUserProfileProcess.php", true);
+  xhr.send(form);
+
 }

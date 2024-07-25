@@ -212,18 +212,17 @@ function selectCity() {
   xhr.send();
 }
 
-function changeProfileImage(){
-
+function changeProfileImage() {
   var image = document.getElementById("profileimage");
 
   image.onchange = function () {
     var file = this.files[0];
     var url = window.URL.createObjectURL(file);
     document.getElementById("image").src = url;
-  }
+  };
 }
 
-function updateUserProfile(){
+function updateUserProfile() {
   var fname = document.getElementById("fname");
   var lname = document.getElementById("lname");
   var mobile = document.getElementById("mobile");
@@ -248,7 +247,6 @@ function updateUserProfile(){
   form.append("postal_code", pCode.value);
   form.append("image", image.files[0]);
 
-
   var xhr = new XMLHttpRequest();
 
   xhr.onreadystatechange = function () {
@@ -256,16 +254,43 @@ function updateUserProfile(){
       var response = xhr.responseText;
       if (response == "Successfully Updated!") {
         window.location.reload();
-      }else if(response == "You have not uploaded any image"){
+      } else if (response == "You have not uploaded any image") {
         alert("You have not uploaded any image");
         window.location.reload();
-      }else{
+      } else {
         alert(response);
       }
     }
-  }
+  };
 
   xhr.open("POST", "updateUserProfileProcess.php", true);
   xhr.send(form);
+}
 
+function addColor() {
+  var color = document.getElementById("addColor");
+
+  var xhr = new XMLHttpRequest();
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      var response = xhr.responseText;
+      if (response == "Successfully Added") {
+        Swal.fire({
+          title: "Success...",
+          text: "Color has registed !",
+          icon: "success",
+        });
+      } else {
+        Swal.fire({
+          title: "Error!",
+          text: response,
+          icon: "error"
+        });
+      }
+    }
+  };
+
+  xhr.open("GET", "addColorProcess.php?color=" + color.value, true);
+  xhr.send();
 }
